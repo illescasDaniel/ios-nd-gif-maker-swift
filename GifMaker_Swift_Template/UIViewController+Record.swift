@@ -17,6 +17,7 @@ import UniformTypeIdentifiers
 let frameCount = 16
 let delayTime: Float = 0.2
 let loopCount = 0 // 0 means loop forever
+let frameRate = 15
 
 extension UIViewController: UINavigationControllerDelegate {}
 
@@ -55,7 +56,7 @@ extension UIViewController: UIImagePickerControllerDelegate {
 		let recordVideoController = UIImagePickerController()
 		recordVideoController.sourceType = sourceType
 		recordVideoController.mediaTypes = [UTType.movie.identifier]
-		recordVideoController.allowsEditing = false
+		recordVideoController.allowsEditing = true
 		recordVideoController.delegate = self
 		self.present(recordVideoController, animated: true)
 	}
@@ -69,7 +70,16 @@ extension UIViewController: UIImagePickerControllerDelegate {
 			return
 		}
 		picker.dismiss(animated: true)
-		convertVideoToGIF(videoURL: videoURL)
+
+		let start = (info[.init(rawValue: "_UIImagePickerControllerVideoEditingStart")] as? NSNumber)?.floatValue
+		let end = (info[.init(rawValue: "_UIImagePickerControllerVideoEditingEnd")] as? NSNumber)?.floatValue
+		let duration: Float?
+		if let start, let end {
+			duration = end - start
+		} else {
+			duration = nil
+		}
+		convertVideoToGIF(videoURL: videoURL, start: start, duration: duration)
 	}
 
 	public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -77,8 +87,13 @@ extension UIViewController: UIImagePickerControllerDelegate {
 	}
 
 	// GIF conversion methods
-	func convertVideoToGIF(videoURL: URL) {
-		let regift = Regift(sourceFileURL: videoURL, frameCount: frameCount, delayTime: delayTime, loopCount: loopCount)
+	func convertVideoToGIF(videoURL: URL, start: Float?, duration: Float?) {
+		let regift: Regift
+		if let start { // trimmed
+			regift = Regift(sourceFileURL: videoURL, startTime: start, duration: duration ?? 0, frameRate: frameRate)
+		} else { // untrimmed
+			regift = Regift(sourceFileURL: videoURL, frameCount: frameCount, delayTime: delayTime, loopCount: loopCount)
+		}
 		let gifURL = regift.createGif()
 		let gif = Gif(url: gifURL!, videoURL: videoURL, caption: nil)
 		displayGIF(gif)
