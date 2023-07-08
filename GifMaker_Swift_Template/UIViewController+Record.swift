@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import UniformTypeIdentifiers
+import AVFoundation
 
 // this will be used on all our View controllers
 // this is probably not recommended to do on a real app
@@ -79,7 +80,13 @@ extension UIViewController: UIImagePickerControllerDelegate {
 		} else {
 			duration = nil
 		}
-		convertVideoToGIF(videoURL: videoURL, start: start, duration: duration)
+		Task {
+			do {
+				try await cropVideoToSquare(videoURL: videoURL, start: start, duration: duration)
+			} catch {
+				print(error)
+			}
+		}
 	}
 
 	public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -87,7 +94,7 @@ extension UIViewController: UIImagePickerControllerDelegate {
 	}
 
 	// GIF conversion methods
-	func convertVideoToGIF(videoURL: URL, start: Float?, duration: Float?) {
+	private func convertVideoToGIF(videoURL: URL, start: Float?, duration: Float?) {
 		let regift: Regift
 		if let start { // trimmed
 			regift = Regift(sourceFileURL: videoURL, startTime: start, duration: duration ?? 0, frameRate: frameRate)
@@ -99,9 +106,67 @@ extension UIViewController: UIImagePickerControllerDelegate {
 		displayGIF(gif)
 	}
 
-	func displayGIF(_ gif: Gif) {
+	private func displayGIF(_ gif: Gif) {
 		let gifEditorVC = storyboard?.instantiateViewController(identifier: "GifEditorViewController") as! GifEditorViewController
 		gifEditorVC.gif = gif
 		navigationController?.pushViewController(gifEditorVC, animated: true)
+	}
+
+	enum CropVideoToSquareError: Error {
+		case avAssetExportSessionError
+		case failedOrCancelled
+	}
+	private func cropVideoToSquare(videoURL: URL, start: Float?, duration: Float?) async throws {
+		//Create the AVAsset and AVAssetTrack
+		let videoAsset = AVAsset(url: videoURL)
+		let videoTrack = try await videoAsset.loadTracks(withMediaType: .video)[0]
+
+		let videoNaturalSize = try await videoTrack.load(.naturalSize)
+
+		// Crop to square
+		let videoComposition = AVMutableVideoComposition()
+		let renderSize = CGSize(width: videoNaturalSize.height, height: videoNaturalSize.height)
+		videoComposition.renderSize = renderSize
+		videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
+
+		//rotate to portrait
+		let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
+		let t1 = CGAffineTransform(translationX: videoNaturalSize.height, y: -(videoNaturalSize.width - videoNaturalSize.height) / 2)
+		let t2 = t1.rotated(by: .pi / 2)
+		transformer.setTransform(t2, at: .zero)
+
+		let instruction = AVMutableVideoCompositionInstruction()
+		instruction.timeRange = CMTimeRange(start: .zero, duration: CMTimeMake(value: .max, timescale: 30))
+		instruction.layerInstructions = [transformer]
+		videoComposition.instructions = [instruction]
+
+		//export
+		guard let exporter = AVAssetExportSession(asset: videoAsset, presetName: AVAssetExportPresetHighestQuality) else {
+			throw CropVideoToSquareError.avAssetExportSessionError
+		}
+		let outputFileURL = try createPath()
+		exporter.outputFileType = .mov
+		exporter.outputURL = outputFileURL
+		exporter.videoComposition = videoComposition
+
+		await exporter.export()
+		switch exporter.status {
+		case .completed:
+			print("Export complete")
+		case .failed, .cancelled:
+			throw CropVideoToSquareError.failedOrCancelled
+		default:
+			break
+		}
+		self.convertVideoToGIF(videoURL: outputFileURL, start: start, duration: duration)
+	}
+
+	private func createPath() throws -> URL {
+		let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+		let outputFolder = documentsURL.appending(path: "output")
+		try FileManager.default.createDirectory(at: outputFolder, withIntermediateDirectories: true)
+		let outputFileURL = outputFolder.appending(path: "output.mov")
+		try? FileManager.default.removeItem(at: outputFileURL)
+		return outputFileURL
 	}
 }
