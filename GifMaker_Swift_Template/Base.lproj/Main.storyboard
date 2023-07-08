@@ -249,6 +249,9 @@
                                         <state key="normal" title="SHARE">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="shareGif:" destination="cB7-Y1-ZFX" eventType="touchUpInside" id="qwJ-Vm-wQt"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoi-MZ-GNH">
                                         <rect key="frame" x="0.0" y="66" width="361" height="50"/>

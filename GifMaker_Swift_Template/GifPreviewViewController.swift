@@ -13,20 +13,20 @@ class GifPreviewViewController: UIViewController {
 	@IBOutlet weak var previewGif: UIImageView!
 	var gif: Gif?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		previewGif.image = gif?.gifImage
-    }
-    
+	}
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+	@IBAction func shareGif(_ sender: Any) {
+		guard let gifURL = self.gif?.url else { return }
+		guard let animatedGif = try? Data(contentsOf: gifURL) else { return }
+		let activityController = UIActivityViewController(activityItems: [animatedGif], applicationActivities: nil)
+		activityController.completionWithItemsHandler = { (activityType, completed, returnedItems, activityError) in
+			if completed {
+				self.navigationController?.popToRootViewController(animated: true)
+			}
+		}
+		self.present(activityController, animated: true)
+	}
 }
