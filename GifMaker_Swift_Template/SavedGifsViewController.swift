@@ -22,8 +22,20 @@ class SavedGifsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		do {
+			let gifsNSArray: NSArray? = try NSKeyedUnarchiver.securelyUnarchiveObject(ofClasses: [NSArray.self, Gif.self], fileURL: gifsFileURL) as? NSArray
+			let unarchivedGifs = gifsNSArray as? [Gif] ?? []
+			self.gifs = unarchivedGifs
+		} catch {
+			print(error)
+		}
+
 		emptyView.isHidden = !gifs.isEmpty
 		collectionView.reloadData()
+	}
+
+	var gifsFileURL: URL {
+		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: "savedGifs")
 	}
 
 	func reload() {
@@ -53,7 +65,7 @@ extension SavedGifsViewController: UICollectionViewDataSource {
 
 extension SavedGifsViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		let width = collectionView.frame.width / 2
+		let width = (collectionView.frame.width - (cellMargin * 2)) / 2
 		let size = CGSize(width: width, height: width)
 		return size
 	}
@@ -65,6 +77,11 @@ extension SavedGifsViewController: GifPreviewViewControllerDelegate {
 			gif.gifData = gif.url.flatMap { try? Data(contentsOf: $0) }
 			self.gifs.append(gif)
 			reload()
+			do {
+				try NSKeyedArchiver.securelyArchive(rootObject: NSArray(array: self.gifs), toFile: gifsFileURL)
+			} catch {
+				print(error)
+			}
 		}
 	}
 }
