@@ -290,6 +290,8 @@
                     <navigationItem key="navigationItem" title="Preview" id="SWX-N6-oaS"/>
                     <connections>
                         <outlet property="previewGif" destination="HQu-c2-zTO" id="PYV-fh-Jmn"/>
+                        <outlet property="saveButton" destination="xoi-MZ-GNH" id="HHm-oo-zav"/>
+                        <outlet property="shareButton" destination="lnU-9g-0xe" id="uDH-4a-cDi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCC-tI-bRp" userLabel="First Responder" sceneMemberID="firstResponder"/>

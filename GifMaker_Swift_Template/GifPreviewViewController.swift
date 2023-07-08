@@ -20,9 +20,18 @@ class GifPreviewViewController: UIViewController {
 	var gif: Gif?
 	weak var savedGifsVCDelegate: GifPreviewViewControllerDelegate?
 
+	@IBOutlet weak var shareButton: UIButton!
+	@IBOutlet weak var saveButton: UIButton!
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		previewGif.image = gif?.gifImage
+
+		self.shareButton.layer.cornerRadius = 4
+		self.shareButton.layer.borderColor = UIColor(red: 255/255, green: 65/255, blue: 112/255, alpha: 1).cgColor
+		self.shareButton.layer.borderWidth = 1
+
+		self.saveButton.layer.cornerRadius = 4
 	}
 
 	@IBAction func shareGif(_ sender: Any) {
