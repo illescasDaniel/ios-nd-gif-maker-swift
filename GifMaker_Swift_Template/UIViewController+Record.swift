@@ -22,9 +22,38 @@ extension UIViewController: UINavigationControllerDelegate {}
 
 extension UIViewController: UIImagePickerControllerDelegate {
 
-	@IBAction func launchVideoCamera(sender: AnyObject) {
+	@IBAction func presentVideoOptions(sender: AnyObject) {
+		if UIImagePickerController.isSourceTypeAvailable(.camera) {
+			let newGifActionSheet = UIAlertController(title: "Create new GIF", message: nil, preferredStyle: .actionSheet)
+			let recordVideo = UIAlertAction(title: "Record a video", style: .default, handler: { action in
+				self.launchVideoCamera()
+			})
+			let chooseFromExisting = UIAlertAction(title: "Choose from Existing", style: .default, handler: { action in
+				self.launchPhotoLibrary()
+			})
+			let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+			newGifActionSheet.addAction(recordVideo)
+			newGifActionSheet.addAction(chooseFromExisting)
+			newGifActionSheet.addAction(cancel)
+
+			self.present(newGifActionSheet, animated: true)
+			newGifActionSheet.view.tintColor = .systemPink
+		} else {
+			self.launchPhotoLibrary()
+		}
+	}
+
+	private func launchVideoCamera() {
+		launchPickerController(sourceType: .camera)
+	}
+
+	private func launchPhotoLibrary() {
+		launchPickerController(sourceType: .photoLibrary)
+	}
+
+	private func launchPickerController(sourceType: UIImagePickerController.SourceType) {
 		let recordVideoController = UIImagePickerController()
-		recordVideoController.sourceType = .camera
+		recordVideoController.sourceType = sourceType
 		recordVideoController.mediaTypes = [UTType.movie.identifier]
 		recordVideoController.allowsEditing = false
 		recordVideoController.delegate = self
