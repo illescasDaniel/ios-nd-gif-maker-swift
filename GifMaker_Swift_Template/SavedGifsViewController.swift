@@ -60,7 +60,14 @@ extension SavedGifsViewController: UICollectionViewDataSource {
 		return cell
 	}
 
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let gif = self.gifs[indexPath.item]
+		let detailVC = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
+		detailVC.gif = gif
 
+		detailVC.modalPresentationStyle = .overCurrentContext
+		self.present(detailVC, animated: true)
+	}
 }
 
 extension SavedGifsViewController: UICollectionViewDelegateFlowLayout {

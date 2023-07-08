@@ -299,7 +299,7 @@
         <!--DetailViewController-->
         <scene sceneID="l2Z-NT-AXf">
             <objects>
-                <viewController storyboardIdentifier="DetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ilf-GF-t1a" userLabel="DetailViewController" customClass="DetailViewController" customModule="GifMaker_Swift_Template" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ilf-GF-t1a" userLabel="DetailViewController" customClass="DetailViewController" customModule="GifMaker_Swift_Template" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="141-ek-2z6"/>
                         <viewControllerLayoutGuide type="bottom" id="8DJ-Ka-ETF"/>
@@ -318,6 +318,9 @@
                                 <state key="normal" title="SHARE">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="shareAction" destination="Ilf-GF-t1a" eventType="touchUpInside" id="CVc-VN-sgU"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fMj-xi-5Fm">
                                 <rect key="frame" x="16" y="245.66666666666663" width="361" height="361"/>
@@ -332,6 +335,9 @@
                                     <constraint firstAttribute="width" constant="44" id="aAD-pY-dof"/>
                                 </constraints>
                                 <state key="normal" image="Close"/>
+                                <connections>
+                                    <action selector="closeButtonAction" destination="Ilf-GF-t1a" eventType="touchUpInside" id="oqL-Kh-DZU"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.18039215689999999" green="0.23921568630000001" blue="0.28235294119999998" alpha="0.89705230496453903" colorSpace="custom" customColorSpace="sRGB"/>
@@ -347,6 +353,9 @@
                             <constraint firstItem="8DJ-Ka-ETF" firstAttribute="top" secondItem="tie-bE-ygI" secondAttribute="bottom" constant="20" id="zYz-Sa-xDb"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="gifImageView" destination="fMj-xi-5Fm" id="EWk-PO-shk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BEl-4x-y0s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

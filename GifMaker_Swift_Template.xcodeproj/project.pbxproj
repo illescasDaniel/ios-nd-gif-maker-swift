@@ -10,6 +10,7 @@
 		65DEA7472A59E60C0038A904 /* GifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DEA7462A59E60C0038A904 /* GifCell.swift */; };
 		65DEA7492A59EF890038A904 /* NSKeyedArchiver+securelyArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DEA7482A59EF890038A904 /* NSKeyedArchiver+securelyArchive.swift */; };
 		65DEA74B2A59F0EC0038A904 /* NSKeyedUnarchiver+securelyUnarchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DEA74A2A59F0EC0038A904 /* NSKeyedUnarchiver+securelyUnarchive.swift */; };
+		65DEA74D2A59F6530038A904 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DEA74C2A59F6530038A904 /* DetailViewController.swift */; };
 		65E5CAFE2A596B8400DC9E58 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CAFD2A596B8400DC9E58 /* WelcomeViewController.swift */; };
 		65E5CB052A596CE600DC9E58 /* UIViewController+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CB042A596CE600DC9E58 /* UIViewController+Record.swift */; };
 		65E5CB072A59730C00DC9E58 /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CB062A59730C00DC9E58 /* UIImage+Gif.swift */; };
@@ -33,6 +34,7 @@
 		65DEA7462A59E60C0038A904 /* GifCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifCell.swift; sourceTree = "<group>"; };
 		65DEA7482A59EF890038A904 /* NSKeyedArchiver+securelyArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSKeyedArchiver+securelyArchive.swift"; sourceTree = "<group>"; };
 		65DEA74A2A59F0EC0038A904 /* NSKeyedUnarchiver+securelyUnarchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSKeyedUnarchiver+securelyUnarchive.swift"; sourceTree = "<group>"; };
+		65DEA74C2A59F6530038A904 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		65E5CAFA2A59691D00DC9E58 /* build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		65E5CAFB2A59691D00DC9E58 /* build.xcconfig.sample */ = {isa = PBXFileReference; lastKnownFileType = text; path = build.xcconfig.sample; sourceTree = "<group>"; };
 		65E5CAFD2A596B8400DC9E58 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				65E5CB102A598BC400DC9E58 /* GifPreviewViewController.swift */,
 				65E5CB1A2A59E2E600DC9E58 /* SavedGifsViewController.swift */,
 				65DEA7462A59E60C0038A904 /* GifCell.swift */,
+				65DEA74C2A59F6530038A904 /* DetailViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				65E5CAFE2A596B8400DC9E58 /* WelcomeViewController.swift in Sources */,
 				65E5CB0F2A5982F800DC9E58 /* Gif.swift in Sources */,
 				65E5CB132A598CC800DC9E58 /* GifEditorViewController.swift in Sources */,
+				65DEA74D2A59F6530038A904 /* DetailViewController.swift in Sources */,
 				65DEA74B2A59F0EC0038A904 /* NSKeyedUnarchiver+securelyUnarchive.swift in Sources */,
 				65E5CB072A59730C00DC9E58 /* UIImage+Gif.swift in Sources */,
 				EDFAA9211CDA9C3100D2CB08 /* RegiftCaption.swift in Sources */,
