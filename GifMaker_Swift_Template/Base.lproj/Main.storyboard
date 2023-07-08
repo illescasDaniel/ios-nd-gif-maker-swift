@@ -187,6 +187,9 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="30"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="gN0-HT-VRx" id="Rd4-C7-naL"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.1803921568627451" green="0.23921568627450979" blue="0.28235294117647058" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -203,6 +206,9 @@
                     <navigationItem key="navigationItem" title="Title" id="98w-hN-q9u">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="kvy-5V-EgW">
                             <color key="tintColor" red="1" green="0.25490196079999999" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="presentPreview:" destination="gN0-HT-VRx" id="0XW-ej-tFV"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -217,7 +223,7 @@
         <!--Gif Preview View Controller-->
         <scene sceneID="6jO-Zd-0F6">
             <objects>
-                <viewController storyboardIdentifier="PreviewViewController" title="Preview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cB7-Y1-ZFX" userLabel="Gif Preview View Controller" customClass="PreviewViewController" customModule="GifMaker_Swift_Template" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GifPreviewViewController" title="Preview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cB7-Y1-ZFX" userLabel="Gif Preview View Controller" customClass="GifPreviewViewController" customModule="GifMaker_Swift_Template" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Rxa-Xz-1J1"/>
                         <viewControllerLayoutGuide type="bottom" id="zEa-bK-uMp"/>
@@ -269,6 +275,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Preview" id="SWX-N6-oaS"/>
+                    <connections>
+                        <outlet property="previewGif" destination="HQu-c2-zTO" id="PYV-fh-Jmn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCC-tI-bRp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -17,23 +17,72 @@ class GifEditorViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		gifImageView.image = gif?.gifImage
+		subscribeToKeyboardNotifications()
 	}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewWillDisappear(_ animated: Bool) {
+		unsubscribeToKeyboardNotifications()
+	}
 
-        // Do any additional setup after loading the view.
-    }
-    
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-    /*
-    // MARK: - Navigation
+		// Do any additional setup after loading the view.
+	}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	@IBAction func presentPreview(_ sender: Any) {
+		let previewVC = self.storyboard?.instantiateViewController(identifier: "GifPreviewViewController") as! GifPreviewViewController
+		self.gif?.caption = self.captionTextField.text
+		guard let sourceFileURL = self.gif?.videoURL else { return }
+		let regift = Regift(sourceFileURL: sourceFileURL, frameCount: frameCount, delayTime: delayTime, loopCount: loopCount)
+		let captionFont = self.captionTextField.font
+		guard let gifURL = regift.createGif(self.captionTextField.text, font: captionFont) else { return }
+		let newGif = Gif(url: gifURL, videoURL: sourceFileURL, caption: self.captionTextField.text)
+		previewVC.gif = newGif
+		self.navigationController?.pushViewController(previewVC, animated: true)
+	}
+}
 
+// MARK: UITextFieldDelegate
+extension GifEditorViewController: UITextFieldDelegate {
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		textField.placeholder = ""
+	}
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.resignFirstResponder()
+		return true
+	}
+}
+
+// MARK: Observe and respond to keyboard notifications
+extension GifEditorViewController {
+
+	private func subscribeToKeyboardNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+
+	private func unsubscribeToKeyboardNotifications() {
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+
+	@objc private func keyboardWillShow(notification: Notification) {
+		if self.view.frame.origin.y >= 0 {
+			self.view.frame.origin.y -= self.keyboardHeight(notification: notification)
+		}
+	}
+
+	@objc private func keyboardWillHide(notification: Notification) {
+		if self.view.frame.origin.y < 0 {
+			self.view.frame.origin.y += self.keyboardHeight(notification: notification)
+		}
+	}
+
+	private func keyboardHeight(notification: Notification) -> CGFloat {
+		guard let userInfo = notification.userInfo else { return 0 }
+		guard let keyboardFrameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return 0 }
+		let height = keyboardFrameEnd.cgRectValue.height
+		return height
+	}
 }

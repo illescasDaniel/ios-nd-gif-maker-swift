@@ -1,5 +1,5 @@
 //
-//  PreviewViewController.swift
+//  GifPreviewViewController.swift
 //  GifMaker_Swift_Template
 //
 //  Created by Daniel Illescas Romero on 8/7/23.
@@ -8,12 +8,14 @@
 
 import UIKit
 
-class PreviewViewController: UIViewController {
+class GifPreviewViewController: UIViewController {
+
+	@IBOutlet weak var previewGif: UIImageView!
+	var gif: Gif?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+		previewGif.image = gif?.gifImage
     }
     
 
