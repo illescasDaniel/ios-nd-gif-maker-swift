@@ -18,6 +18,7 @@ class GifEditorViewController: UIViewController {
 		super.viewWillAppear(animated)
 		gifImageView.image = gif?.gifImage
 		subscribeToKeyboardNotifications()
+		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
