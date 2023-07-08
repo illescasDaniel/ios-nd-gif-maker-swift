@@ -27,7 +27,15 @@ class GifEditorViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		// Do any additional setup after loading the view.
+		let captionTextFieldAttributes: [NSAttributedString.Key : Any] = [
+			.strokeColor: UIColor.black,
+			.strokeWidth: -4,
+			.foregroundColor: UIColor.white,
+			.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40) ?? UIFont.systemFont(ofSize: 30)
+		]
+		self.captionTextField.defaultTextAttributes = captionTextFieldAttributes
+		self.captionTextField.textAlignment = .center
+		self.captionTextField.attributedPlaceholder = NSAttributedString(string: "Add Caption", attributes: captionTextFieldAttributes)
 	}
 
 	@IBAction func presentPreview(_ sender: Any) {
