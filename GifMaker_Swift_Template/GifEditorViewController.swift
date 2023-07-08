@@ -32,6 +32,7 @@ class GifEditorViewController: UIViewController {
 
 	@IBAction func presentPreview(_ sender: Any) {
 		let previewVC = self.storyboard?.instantiateViewController(identifier: "GifPreviewViewController") as! GifPreviewViewController
+		previewVC.savedGifsVCDelegate = self.navigationController?.viewControllers.first as? GifPreviewViewControllerDelegate
 		self.gif?.caption = self.captionTextField.text
 		guard let sourceFileURL = self.gif?.videoURL else { return }
 		let regift = Regift(sourceFileURL: sourceFileURL, frameCount: frameCount, delayTime: delayTime, loopCount: loopCount)

@@ -13,7 +13,7 @@ class Gif {
 	let videoURL: URL?
 	var caption: String?
 	let gifImage: UIImage?
-	let gifData: Data?
+	var gifData: Data?
 
 	init(url: URL, videoURL: URL, caption: String?) {
 		self.url = url
