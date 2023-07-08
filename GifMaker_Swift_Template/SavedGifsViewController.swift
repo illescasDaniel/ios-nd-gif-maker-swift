@@ -19,6 +19,11 @@ class SavedGifsViewController: UIViewController {
 	@IBOutlet
 	private weak var emptyView: UIStackView!
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -32,8 +37,15 @@ class SavedGifsViewController: UIViewController {
 			print(error)
 		}
 
-		emptyView.isHidden = !gifs.isEmpty
-		collectionView.reloadData()
+		reload()
+
+		let bottomBlur = CAGradientLayer()
+		bottomBlur.frame = CGRect(x: 0, y: self.view.frame.size.height - 100, width: self.view.frame.size.width, height: 100)
+		bottomBlur.colors = [
+			UIColor(white: 1, alpha: 0).cgColor,
+			UIColor.white.cgColor
+		]
+		self.view.layer.insertSublayer(bottomBlur, above: self.collectionView.layer)
 	}
 
 	private func showWelcome() {
@@ -48,14 +60,18 @@ class SavedGifsViewController: UIViewController {
 	}
 
 	private func reload() {
-		emptyView.isHidden = !gifs.isEmpty
+		if gifs.isEmpty {
+			emptyView.isHidden = false
+			self.title = String()
+		} else {
+			emptyView.isHidden = true
+			self.title = "My Collection"
+		}
 		collectionView.reloadData()
 	}
 }
 
-extension SavedGifsViewController: UICollectionViewDelegate {
-
-}
+extension SavedGifsViewController: UICollectionViewDelegate {}
 
 extension SavedGifsViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
