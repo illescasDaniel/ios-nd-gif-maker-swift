@@ -22,6 +22,8 @@ class SavedGifsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		showWelcome()
+
 		do {
 			let gifsNSArray: NSArray? = try NSKeyedUnarchiver.securelyUnarchiveObject(ofClasses: [NSArray.self, Gif.self], fileURL: gifsFileURL) as? NSArray
 			let unarchivedGifs = gifsNSArray as? [Gif] ?? []
@@ -34,11 +36,18 @@ class SavedGifsViewController: UIViewController {
 		collectionView.reloadData()
 	}
 
-	var gifsFileURL: URL {
+	private func showWelcome() {
+		if !UserDefaults.standard.bool(forKey: "WelcomeViewSeen") {
+			let welcomeViewController = self.storyboard?.instantiateViewController(withIdentifier: "WelcomeViewController") as! WelcomeViewController
+			self.navigationController?.pushViewController(welcomeViewController, animated: true)
+		}
+	}
+
+	private var gifsFileURL: URL {
 		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: "savedGifs")
 	}
 
-	func reload() {
+	private func reload() {
 		emptyView.isHidden = !gifs.isEmpty
 		collectionView.reloadData()
 	}
